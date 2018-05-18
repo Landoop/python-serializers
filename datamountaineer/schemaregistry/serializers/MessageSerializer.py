@@ -1,5 +1,10 @@
-from fastavro.reader import read_data
-from fastavro import dump
+try:
+  from fastavro.reader import read_data
+  from fastavro import dump
+  HAS_FAST = True
+except:
+  HAS_FAST = False
+
 import io
 import struct
 import avro.io
@@ -38,7 +43,7 @@ class MessageSerializer(object):
         self.registry_client = registry_client
         self.id_to_decoder_func = { }
         self.id_to_writers = { }
-        self.fast_avro = fast_avro
+        self.fast_avro = HAS_FAST
 
     def _set_subject(self, subject, is_key=False):
         subject_suffix = ('-key' if is_key else '-value')
